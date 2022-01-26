@@ -1,0 +1,17 @@
+virtualization_packages:
+  - qemu-kvm
+  - libvirt-daemon-system
+  - libvirt-clients
+  - bridge-utils
+  - virt-manager
+  - python-libvirt
+  - python-lxml
+  - cloud-image-utils
+  - virtinst
+  - uvtool
+
+uvtool_images:
+  - trusty
+  - xenial
+  - bionic
+  - focal
