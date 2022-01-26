@@ -1,0 +1,12 @@
+#!/bin/bash
+
+export LAUNCHPAD_USER="al3jandrosg"
+
+# physical server
+export HOST_IP='192.168.1.250' # as in configs/autoinstall-config.yaml
+export HOSTNAME='lnxsrv'       # as in configs/autoinstall-config.yaml
+export HOST_USER='lnx'         # as in configs/autoinstall-config.yaml
+
+# deployment host
+export DEP_HOST_NAME='dep-host'
+export DEP_HOST_OS_RELEASE='20.04'
