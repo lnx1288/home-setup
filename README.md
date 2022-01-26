@@ -6,6 +6,7 @@
 
 ### Physical server(s) OS installation
 Install some required dependencies:
+
 `sudo apt install xorriso sed curl gpg isolinux`
 
 Get and run the script that adds all the configs intos the ISO
@@ -65,4 +66,4 @@ local `/etc/hosts` for hostname resolution convenience.
 
  * [Ubuntu autoinstall ISO with cloud-init](https://www.pugetsystems.com/labs/hpc/How-To-Make-Ubuntu-Autoinstall-ISO-with-Cloud-init-2213/)
  * [ubuntu-autoinstall-generator tool](https://github.com/covertsh/ubuntu-autoinstall-generator)
- * [Useful full-disk config for automated Ubuntu install](https://itectec.com/ubuntu/ubuntu-how-to-autoinstall-config-fill-disk-option-on-ubuntu-20-04-automated-server-insall/
+ * [Useful full-disk config for automated Ubuntu install](https://itectec.com/ubuntu/ubuntu-how-to-autoinstall-config-fill-disk-option-on-ubuntu-20-04-automated-server-insall/)
