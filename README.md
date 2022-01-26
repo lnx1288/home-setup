@@ -8,10 +8,13 @@
 Install some required dependencies:
 `sudo apt install xorriso sed curl gpg isolinux`
 
-Get and run the script that adds all the configs intos the ISO 
-`git clone https://github.com/covertsh/ubuntu-autoinstall-generator.git`
-`cd ubuntu-autoinstall-generator`
-`sudo chmod +x ubuntu-autoinstall-generator.sh`
+Get and run the script that adds all the configs intos the ISO
+
+```
+git clone https://github.com/covertsh/ubuntu-autoinstall-generator.git
+cd ubuntu-autoinstall-generator
+sudo chmod +x ubuntu-autoinstall-generator.sh
+```
 
 Create/modify the `yaml` file for 
 [Ubuntu Autoinstall](https://ubuntu.com/server/docs/install/autoinstall) to use.
