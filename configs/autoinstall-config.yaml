@@ -1,0 +1,108 @@
+#cloud-config
+autoinstall:
+  version: 1
+  update: yes
+  reporting:
+    subiquity:
+      type: journald
+  keyboard:
+      layout: es
+  network:
+      network:
+          version: 2
+          ethernets:
+            id0:
+              match:
+                name: enp*s0
+              dhcp4: no
+              addresses: [192.168.1.250/24]
+              gateway4: 192.168.1.1
+              nameservers:
+                addresses: [8.8.8.8, 8.8.4.4] 
+  storage:
+    config:
+    - id: disk-nvme0n1
+      path: /dev/nvme0n1
+      preserve: false
+      ptable: gpt
+      type: disk
+      wipe: superblock
+    - id: disk-sda
+      path: /dev/sda
+      preserve: false
+      type: disk
+      wipe: superblock
+    - id: disk-sdb
+      path: /dev/sdb
+      preserve: false
+      type: disk
+      wipe: superblock
+    - device: disk-nvme0n1
+      flag: boot
+      grub_device: true
+      id: partition-0
+      number: 1
+      size: 536870912
+      type: partition
+    - fstype: fat32
+      id: format-1
+      type: format
+      volume: partition-0
+    - device: disk-nvme0n1
+      id: partition-1
+      number: 2
+      size: 1073741824
+      type: partition
+    - fstype: ext4
+      id: format-2
+      type: format
+      volume: partition-1
+    - device: disk-nvme0n1
+      id: partition-2
+      number: 3
+      size: -1
+      type: partition
+    - fstype: ext4
+      id: format-3
+      type: format
+      volume: partition-2
+    - device: format-3
+      id: mount-2
+      path: /
+      type: mount
+    - devices:
+      - disk-sda
+      - disk-sdb
+      id: raid-0
+      name: md0
+      raidlevel: raid1
+      spare_devices: []
+      type: raid
+    - fstype: ext4
+      id: format-4
+      type: format
+      volume: raid-0
+    - device: format-2
+      id: mount-1
+      path: /boot
+      type: mount
+    - device: format-1
+      id: mount-0
+      path: /boot/efi
+      type: mount
+    - device: format-4
+      id: mount-2
+      path: /data
+      type: mount
+  identity:
+      hostname: lnxsrv
+      username: lnx
+      password: $6$CbB64fNqviguCtZ5$JQjFpCwVXpqpM0jrVw/foOnKbovU2KoTWrmzBq4HUlO9ekp9UeTmNz97UYbPp8ERV5Oo6/y64ud7nN7slOLYe/
+  ssh:
+      install-server: yes
+      authorized-keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDn7bpGa89xUSMbK5tRVLsRlb7wkqPi21FUsk0Vc4mV2oTJNb0P+yUFMyfc+5p0u/nvhg+NdSK/yoR+LqYrpBxEFNhdFDbKBRDg21FKa3F6AmbptHCigeMtYgugbLCyWvIkvW/11ae5gvdZTkkPIq7NFD5ilH2gn/oyOrJubPokvRfK+O5U+RHAAdetavILj3cSwh632lcNIe1aAp/usm7dsSKgfuYCstonyCtmW3JPbF2wuiMsOMJoMm7sxWcZFgq1uHay3xm62achC8xCWo9UVo0Ke0CNgLe6hG4i77kCmUiMEIu3bYDeu200bhJRzaTbPktRrEk+Mx6BX5L21Bxon2IUHXOaCTtXYvQuH3Cl4wZpDGyMjyuPkG0mTxNcuvgUVIYvfIgdxSlFd4OWqK+gVsQjM4Z3bepCxl7e49qMufvbPbBMmTmaZVHiROgfKJWL96RjX/u19AUYsWB5GVPEgoyNexeQLNCuU7X1MkftGQ34I6JS0uKEvK/hU2MhGV+fRvEHx5AMAP1eQffsmkIqOUJeWotJRMqTYCPX0+npfGOg6hxiKXkpaM3q4h3JM2RevPi8Yvig1oJj+1bjuhrhIEGEbF7g1l8grpJq+Z30bb18dL/14ltDDIIFJZI1/Ha3Q0kMgsF5V+XtJq21FF1dd/mdGPcUKseeHSzDAx6q5Q== lnx@lnxpc
+  user-data:
+      disable_root: false
+  late-commands:
+      - echo 'lnx ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/lnx
