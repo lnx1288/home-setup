@@ -1,0 +1,16 @@
+[local]
+localhost ansible_connection=local
+
+# user/hostname/IP as in configs/autoinstall-config.yaml
+[masters]
+lnxsrv  ansible_host=192.168.1.250 ansible_connection=ssh  ansible_user=lnx
+
+[workers]
+lnxsrv  ansible_host=192.168.1.250 ansible_connection=ssh  ansible_user=lnx
+
+[kubernetes:children]
+masters
+workers
+
+[hypervisors]
+lnxsrv  ansible_host=192.168.1.250 ansible_connection=ssh  ansible_user=lnx

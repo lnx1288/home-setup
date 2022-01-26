@@ -1,0 +1,10 @@
+- name: Run common tasks on all nodes
+  hosts: all
+  roles:
+    - common
+
+- name: Set up hypervisor nodes
+  hosts: hypervisors
+  roles:
+    - hypervisor
+
