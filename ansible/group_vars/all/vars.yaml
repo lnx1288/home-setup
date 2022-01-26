@@ -1,0 +1,13 @@
+arch: amd64
+os_release: focal
+
+extra_packages:
+  - vim 
+  - git 
+  - curl 
+  - wget
+  - tree
+  - apt-transport-https 
+
+# kubernetes
+pod_network_cidr: "10.10.0.0/16"
