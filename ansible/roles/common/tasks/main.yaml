@@ -36,7 +36,7 @@
     line: "{{ hostvars[item].ansible_default_ipv4.address }} {{item}}" 
     state: present
     backup: yes
-  when: hostvars[item].ansible_default_ipv4.address is defined
+  when: hostvars[item].ansible_default_ipv4.address is defined and "{{ item }}" != "localhost"
   with_items: "{{ groups['all'] }}"
   tags:
     - common
