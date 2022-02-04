@@ -14,7 +14,6 @@
     - common
 
 - name: Setting OS version fact
-  gather_facts: true
   set_fact:
     osversion: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}"
   tags:
