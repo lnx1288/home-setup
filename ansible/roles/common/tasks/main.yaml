@@ -14,6 +14,7 @@
     - common
 
 - name: Setting OS version fact
+  gather_facts: true
   set_fact:
     osversion: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}"
   tags:
@@ -22,8 +23,10 @@
 - name: Check OS version
   fail:
     msg: "OS Version( {{ ansible_distribution }}{{ ansible_distribution_major_version }} ) is not certified for the role"
+  vars:
+    rel: "{{ os_release }}" # added this var to workaround jinja2 delimiter warning
   when:
-    - osversion != {{ os_release }}
+    - osversion != rel
   tags:
     - common
 
@@ -31,10 +34,10 @@
   lineinfile: 
     dest: /etc/hosts 
     regexp: '.*{{ item }}$' 
-    line: "{{ hostvars[item].ansible_host.address }} {{item}}" 
+    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{item}}" 
     state: present
     backup: yes
-  when: hostvars[item].ansible_host.address is defined
-  with_items: groups['all']
+  when: hostvars[item].ansible_default_ipv4.address is defined
+  with_items: "{{ groups['all'] }}"
   tags:
     - common
