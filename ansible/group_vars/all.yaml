@@ -1,5 +1,5 @@
 arch: amd64
-os_release: focal
+os_release: ubuntu20 # all ubuntu 20.xx releases
 
 extra_packages:
   - vim 
