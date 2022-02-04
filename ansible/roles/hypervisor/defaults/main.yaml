@@ -15,3 +15,5 @@ uvtool_images:
   - xenial
   - bionic
   - focal
+
+img_arch: amd64  # uvtool images architecture
