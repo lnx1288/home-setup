@@ -4,7 +4,6 @@ virtualization_packages:
   - libvirt-clients
   - bridge-utils
   - virt-manager
-  - python-libvirt
   - python-lxml
   - cloud-image-utils
   - virtinst

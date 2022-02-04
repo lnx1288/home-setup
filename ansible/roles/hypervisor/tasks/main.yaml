@@ -1,29 +1,36 @@
-- name: Check CPU Virtualization Support
-  command: "egrep -c '(vmx|svm)' /proc/cpuinfo"
-  register: cpuinfo_output
-  failed_when: cpuinfo_output.stdout == "0"
-  fail:
-    msg: "Host CPU doesn't support virtualization"
+- name: Check host CPU virtualization support
+  block:
+    - name: Check host CPU required instruction set
+      command: "egrep -c '(vmx|svm)' /proc/cpuinfo"
+      register: cpuinfo_output
+      failed_when: cpuinfo_output.stdout == "0"
+  rescue:
+    - name: Print error message
+      debug:
+        msg: "Host CPU doesn't support virtualization"
   tags: 
     - 'skip_ansible_lint'
     - hypervisor
 
-- name: Check if your processor is 64-bit
-  command: "egrep -c ' lm ' /proc/cpuinfo"
-  changed_when: no
-  register: bitinfo_output
-  failed_when: bitinfo_output.stdout == "0"
-  fail:
-    msg: "Host CPU is not 64-bit"
+- name: Check host CPU arch
+  block:
+    - name: Check if host CPU is 64-bit
+      command: "egrep -c ' lm ' /proc/cpuinfo"
+      changed_when: no
+      register: bitinfo_output
+      failed_when: bitinfo_output.stdout == "0"
+  rescue:
+    - name: Print error message
+      debug:
+        msg: "Host CPU is not 64-bit"
   tags: 
     - 'skip_ansible_lint'
     - hypervisor
 
 - name: Install virtualization tooling
   package:
-    - name:
-        - "{{ item }}"
-      state: present
+    name: "{{ item }}"
+    state: latest
   with_items: "{{ virtualization_packages }}"
   tags:
     - hypervisor
@@ -37,6 +44,7 @@
     - hypervisor
 
 - name: Sync uvtool images
-  command: "uvt-simplestreams-libvirt sync release={{ uvtool_images }} arch={{ img_arch }}"
+  command: "uvt-simplestreams-libvirt sync release={{ item }} arch={{ img_arch }}"
+  with_items: "{{ uvtool_images }}"
   tags:
     - hypervisor
