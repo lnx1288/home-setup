@@ -66,10 +66,6 @@ autoinstall:
       id: format-3
       type: format
       volume: partition-2
-    - device: format-3
-      id: mount-2
-      path: /
-      type: mount
     - devices:
       - disk-sda
       - disk-sdb
@@ -82,16 +78,20 @@ autoinstall:
       id: format-4
       type: format
       volume: raid-0
-    - device: format-2
-      id: mount-1
-      path: /boot
-      type: mount
     - device: format-1
       id: mount-0
       path: /boot/efi
       type: mount
-    - device: format-4
+    - device: format-2
+      id: mount-1
+      path: /boot
+      type: mount
+    - device: format-3
       id: mount-2
+      path: /
+      type: mount
+    - device: format-4
+      id: mount-3
       path: /data
       type: mount
   identity:
