@@ -1,2 +1,2 @@
 dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
-src_key: "{{ lookup('env', 'HOME') }}/home-setup/secrets/ssh/id_rsa"
+src_key: "{{ lookup('env', 'HOME') }}/home-setup/ansible/secrets/ssh/id_rsa"
