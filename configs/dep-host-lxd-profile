@@ -24,9 +24,7 @@ config:
       - ansible
       - git
     runcmd:
-      - [git, clone, "https://github.com/lnx1288/home-setup.git", /home/ubuntu/home-setup]
-      - [ssh-keygen, "-t", rsa, "-b", 4096, "-N", "", "-f", /home/ubuntu/.ssh/id_rsa]
-      - [chown, "ubuntu:ubuntu", "-R", "/home/ubuntu/"]
+      - [git, clone, "https://github.com/lnx1288/home-setup.git"]
 description: Deployment host profile
 devices:
   eth0:
