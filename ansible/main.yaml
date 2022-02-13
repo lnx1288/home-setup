@@ -16,3 +16,23 @@
   roles:
     - hypervisor
 
+- name: Initial Kubernetes tasks and configs
+  hosts: kubernetes
+  become: true
+  gather_facts: true
+  roles:
+    - kubernetes-common
+
+- name: Install and configure Kubernetes master nodes
+  hosts: masters
+  become: true
+  gather_facts: true
+  roles:
+    - kubernetes-master
+
+- name: Install and configure Kubernetes worker nodes
+  hosts: workers
+  become: true
+  gather_facts: true
+  roles:
+    - kubernetes-worker
