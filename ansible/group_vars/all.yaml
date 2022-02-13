@@ -1,5 +1,6 @@
 arch: amd64
 os_release: ubuntu20 # all ubuntu 20.xx releases
+os_release_name: focal
 
 extra_packages:
   - vim 
@@ -8,6 +9,11 @@ extra_packages:
   - wget
   - tree
   - apt-transport-https 
+  - ca-certificates
+  - gnupg-agent
 
 # kubernetes
-pod_network_cidr: "10.10.0.0/16"
+allow_pods_on_master: true # must set to true for single-node deployments
+
+# kubernetes CRI
+cri_os_string: "xUbuntu_20.04"

@@ -1,0 +1,4 @@
+---
+- include_tasks: 01-install-cri.yaml
+- include_tasks: 02-k8s-utils.yaml
+- include_tasks: 03-nodes-misc.yaml

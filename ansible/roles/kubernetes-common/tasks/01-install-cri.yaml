@@ -1,0 +1,93 @@
+- name: Persisting overlay and br_netfilter modules
+  template:
+    src: files/cri.conf
+    dest: "/etc/modules-load.d/cri.conf"
+
+- name: Load overlay and br_netfilter modules
+  shell: |
+    modprobe overlay
+    modprobe br_netfilter
+
+- name: Copy bridge configuration
+  template:
+    src: files/kubernetes-cri.conf
+    dest: "/etc/sysctl.d/kubernetes-cri.conf"
+
+- name: Update sysctl configuration
+  shell: sysctl --system
+
+- name: Add an apt signing key for CRI-O
+  apt_key:
+    url: "{{ item }}"
+    state: present
+  loop:
+    - "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ cri_os_string }}/Release.key"
+    - "https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ VERSION }}/{{ cri_os_string }}/Release.key"
+  when: cri == "crio"
+
+- name: Add apt repositories for CRI-O v{{ VERSION }} version
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop:
+    - "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ cri_os_string }}/ /"
+    - "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ VERSION }}/{{ cri_os_string }}/ /"
+  when: cri == "crio"
+
+- name: Install CRI-O
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop: [cri-o, cri-o-runc]
+  when: cri == "crio"
+
+- name: CRI-O service
+  shell: |
+    systemctl daemon-reload
+    systemctl enable crio --now
+  when: cri == "crio"
+
+- name: Add an apt signing key for Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  when: cri == "containerd"
+
+- name: Add apt repository for stable version
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ os_release_name }} stable
+    state: present
+  when: cri == "containerd"
+
+- name: Install containerd
+  apt:
+    name: containerd.io
+    state: present
+    update_cache: true
+  when: cri == "containerd"
+
+- name: Create containerd config directory
+  file:
+    path: /etc/containerd
+    state: directory
+  when: cri == "containerd"
+
+- name: Add containerd config file
+  shell: |
+    containerd config default | tee /etc/containerd/config.toml
+  when: cri == "containerd"
+
+- name: Use systemd cgroup driver for containerd
+  lineinfile:
+    path: /etc/containerd/config.toml
+    insertafter: 'containerd\.runtimes\.runc\.options'
+    line: "            systemd_cgroup = true"
+    firstmatch: true
+    state: present
+  when: cri == "containerd"
+
+- name: Restart containerd service
+  shell: |
+    systemctl restart containerd
+  when: cri == "containerd"
