@@ -1,6 +1,7 @@
-- name: Run apt-get update
+- name: Update and upgrade via apt
   apt:
     update_cache: yes
+    upgrade: dist
   tags:
     - common
 
