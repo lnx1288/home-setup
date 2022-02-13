@@ -1,0 +1,5 @@
+network: "calico" # TO-DO add cilium as an option
+pod_subnet: "10.10.0.0/16"
+service_subnet: "10.20.0.0/16"
+dns_domain: "cluster.local"
+dashboard_version: v2.5.0
