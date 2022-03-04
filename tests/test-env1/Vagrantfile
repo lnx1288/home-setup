@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+BASE_IMAGE = "generic/ubuntu2004"
+
+# Global configuration
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.vm.box = BASE_IMAGE
+    config.ssh.insert_key = true
+    config.vm.provider "libvirt" do |v|
+        v.memory = 4096
+        v.cpus = 2
+    end
+
+    config.vm.provision "shell", inline: <<-SHELL
+    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDYu+AfWL9c+T2K+JierS8ZGsIkZY0GPaVipjnaCq3RdTBCA672K9J/WrS/lgbIVJz9p0nWGM9NStV0T/DtP9v3SSTbYlfLRptC5TiZfo2PnsDRWoqLxphDquz9OlqJu3jONqzXbWO0HgNKQML5i/X+99x49zIg1kNtQqJtwR3MvguZob9coYOiqpEBR7OVYJbGYEvm2Nntmtqgrf2Ou+57tTYNsZqAJPo9yPkmWtCn7WdHetHkx7kwLa6SP6hFCzhvBgOsH2f/6AFakA64RbxKoV+tP5vMnlmgfgvIctPCF9zmgD5cVMJiMCENrPuDLGMMXOPIcTCqwNJPZNIdxS0w8/iKz0U6SmvW/5Zlf1DHwC3zCzEVjcVaoFVp4sLLcIH1enbV0KSH7fcyJnkBX4Ca+SPpQ4jqnjSKUt30R1EZyCSIpDrot9SOSgbe+TxF7JV2xTRNxyUqa0gRNF1X5oIpBNZAkXJ/camTZeoIYl0B1Wa4LC8MgI7RtOrnwyqPJBG4GXitkmSriv9TDbOloYVWs3wIezFI7H8nFkJP+RubXma1liitkAhZbnAKocZdl94vTPPU5n+73tmaIrYGIbIesHEMHHLkHmi2ZQ17ng4ms8DFMs1njc1UOuPsW7whpDRifjpWyictvoA8SsXPgQUBWq/gsJTiwuqKwCz4+1TeuQ== root@dep-host" >> /home/vagrant/.ssh/authorized_keys
+    SHELL
+
+    # K8s single node
+    config.vm.define "node" do |node|
+        node.vm.network "private_network", ip: "192.168.122.140"
+        node.vm.hostname = "master"
+    end
+end

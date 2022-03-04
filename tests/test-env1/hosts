@@ -1,0 +1,15 @@
+[local]
+localhost ansible_connection=local
+
+[masters]
+lnxsrv  ansible_host=192.168.122.140 ansible_connection=ssh  ansible_user=vagrant
+
+[workers]
+lnxsrv  ansible_host=192.168.122.140 ansible_connection=ssh  ansible_user=vagrant
+
+[kubernetes:children]
+masters
+workers
+
+[hypervisors]
+lnxsrv  ansible_host=192.168.122.140 ansible_connection=ssh  ansible_user=vagrant
