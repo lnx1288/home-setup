@@ -1,3 +1,11 @@
+- name: Ensure .ssh directory exists.
+  file:
+    dest: "{{ dest_key | dirname }}"
+    mode: 0700
+    state: directory
+  tags:
+    - ssh
+
 - name: Install ssh private/public keys
   copy:
     src: "{{ item.src }}"
