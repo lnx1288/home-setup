@@ -36,8 +36,10 @@
 
 - name: Allow pods on master node (if configured).
   command: "kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-"
+  vars:
+    pods_on_master: "{{ allow_pods_on_master }}"
   when:
-    - "{{ allow_pods_on_master }}" == true
+    - pods_on_master == true
 
 - name: Check if Kubernetes Dashboard UI service exists.
   shell: kubectl get services --namespace kube-system | grep -q kubernetes-dashboard
