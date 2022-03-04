@@ -1,6 +1,7 @@
 - name: Set up SSH access
   hosts: all
   become: yes
+  gather_facts: false
   roles:
     - ssh
 

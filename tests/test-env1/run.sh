@@ -21,8 +21,7 @@ start(){
     ansible_remote_dir="/root/home-setup/ansible/"
     echo "Waiting for the repo to be cloned into $DEP_HOST_NAME..."; sleep 75
     lxc file push hosts "${DEP_HOST_NAME}${ansible_remote_dir}"
-
-    lxc exec "$DEP_HOST_NAME" -- sh -c "ansible-playbook -i $ansible_remote_dir/hosts --ask-vault-password ${ansible_remote_dir}main.yaml > ansible.log"
+    lxc exec "$DEP_HOST_NAME" -- sh -c "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i $ansible_remote_dir/hosts --ask-vault-password ${ansible_remote_dir}main.yaml > ansible.log"
 }
 
 # TO-DO
