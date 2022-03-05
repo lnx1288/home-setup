@@ -1,3 +1,8 @@
 k8s_version: "1.23.0"
 cri: "containerd"       # could be crio
 VERSION: "1.23"
+
+k8s_packages:
+  - kubelet
+  - kubectl
+  - kubeadm

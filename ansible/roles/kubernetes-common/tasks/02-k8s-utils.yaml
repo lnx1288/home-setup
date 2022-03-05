@@ -22,7 +22,7 @@
     state: present
     filename: kubernetes.list
 
-- name: Install package {{ item }}
+- name: Install Kubernetes packages
   apt:
     name: "{{ item }}"
     state: present
