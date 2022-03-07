@@ -46,5 +46,6 @@
 - name: Sync uvtool images
   command: "uvt-simplestreams-libvirt sync release={{ item }} arch={{ img_arch }}"
   with_items: "{{ uvtool_images }}"
+  ignore_errors: yes
   tags:
     - hypervisor
