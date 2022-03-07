@@ -1,9 +1,3 @@
 ---
-- name: Copy join command to node
-  copy:
-    src: join
-    dest: /tmp/join
-    mode: 0755
-
 - name: Join the node to cluster
   shell: sh /tmp/join

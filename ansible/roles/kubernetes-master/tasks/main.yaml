@@ -30,8 +30,7 @@
 - name: Deploy Calico CNI
   become: false
   command: >
-    kubectl --kubeconfig /home/{{ ansible_user }}/.kube/config apply -f
-    https://docs.projectcalico.org/manifests/calico.yaml
+    kubectl --kubeconfig /home/{{ ansible_user }}/.kube/config apply -f https://docs.projectcalico.org/manifests/calico.yaml
   when: network == "calico"
 
 - name: Allow pods on master node (if configured).
