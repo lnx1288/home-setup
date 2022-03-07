@@ -36,6 +36,10 @@
 
 - name: Allow pods on master node (if configured).
   command: "kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-"
+  retries: 3
+  delay: 15
+  register: untaint_result
+  until: untaint_result is not failed
   vars:
     pods_on_master: "{{ allow_pods_on_master }}"
   when:
