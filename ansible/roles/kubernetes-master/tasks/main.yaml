@@ -47,12 +47,12 @@
   shell: kubectl get services --namespace kube-system | grep -q kubernetes-dashboard
   changed_when: false
   failed_when: false
-  register: k8s_dashboard_service
-  when: k8s_enable_web_ui | bool
+  register: dashboard_service
+  when: enable_web_ui | bool
 
 - name: Enable the Kubernetes Web Dashboard UI (if configured).
   become: false
   command: "kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/{{ dashboard_version }}/aio/deploy/recommended.yaml"
   when:
-    - k8s_enable_web_ui | bool
-    - k8s_dashboard_service.rc != 0
+    - enable_web_ui | bool
+    - dashboard_service.rc != 0
