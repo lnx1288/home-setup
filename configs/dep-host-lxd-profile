@@ -24,7 +24,7 @@ config:
       - ansible
       - git
     runcmd:
-      - [git, clone, "https://github.com/lnx1288/home-setup.git", /root/home-setup]
+      - [git, clone, "--branch", development, "https://github.com/lnx1288/home-setup.git", /root/home-setup]
 description: Deployment host profile
 devices:
   eth0:
