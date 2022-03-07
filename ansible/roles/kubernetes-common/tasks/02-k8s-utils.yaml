@@ -12,6 +12,8 @@
   when: ansible_swaptotal_mb > 0
 
 - name: Adding apt signing key for Kubernetes
+  retries: 3
+  delay: 5
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     state: present
