@@ -14,6 +14,7 @@ extra_packages:
 
 # kubernetes
 allow_pods_on_master: true # must set to true for single-node deployments
+single_node_deployment: true
 
 # kubernetes CRI
 cri_os_string: "xUbuntu_20.04"

@@ -1,3 +1,7 @@
 ---
 - name: Join the node to cluster
-  shell: sh /tmp/join
+  become: yes
+  vars:
+    execute: "{{ single_node_deployment }}" 
+  shell: sh -c "{{ join_command }}"
+  when: execute == "false"

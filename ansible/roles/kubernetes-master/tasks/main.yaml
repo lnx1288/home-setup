@@ -17,9 +17,10 @@
   shell: kubeadm token create --print-join-command
   register: join_command
 
-- name: Copy join command
-  become: false
-  local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="/tmp/join"
+- name: Setting join command fact
+  set_fact:
+    join_command: "{{ join_command.stdout_lines[0] }}"
+    cacheable: yes
 
 - name: Enable kubectl autocompletion
   shell:
