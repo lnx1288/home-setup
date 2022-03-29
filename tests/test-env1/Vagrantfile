@@ -15,12 +15,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # K8s single node
     config.vm.define "node" do |node|
-        node.vm.network "private_network", ip: "192.168.122.140"
+        node.vm.network "private_network", ip: "192.168.122.140", mode: 'bridge'
         node.vm.hostname = "master"
     end
 
     config.vm.provision "shell", inline: <<-SHELL
     echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDYu+AfWL9c+T2K+JierS8ZGsIkZY0GPaVipjnaCq3RdTBCA672K9J/WrS/lgbIVJz9p0nWGM9NStV0T/DtP9v3SSTbYlfLRptC5TiZfo2PnsDRWoqLxphDquz9OlqJu3jONqzXbWO0HgNKQML5i/X+99x49zIg1kNtQqJtwR3MvguZob9coYOiqpEBR7OVYJbGYEvm2Nntmtqgrf2Ou+57tTYNsZqAJPo9yPkmWtCn7WdHetHkx7kwLa6SP6hFCzhvBgOsH2f/6AFakA64RbxKoV+tP5vMnlmgfgvIctPCF9zmgD5cVMJiMCENrPuDLGMMXOPIcTCqwNJPZNIdxS0w8/iKz0U6SmvW/5Zlf1DHwC3zCzEVjcVaoFVp4sLLcIH1enbV0KSH7fcyJnkBX4Ca+SPpQ4jqnjSKUt30R1EZyCSIpDrot9SOSgbe+TxF7JV2xTRNxyUqa0gRNF1X5oIpBNZAkXJ/camTZeoIYl0B1Wa4LC8MgI7RtOrnwyqPJBG4GXitkmSriv9TDbOloYVWs3wIezFI7H8nFkJP+RubXma1liitkAhZbnAKocZdl94vTPPU5n+73tmaIrYGIbIesHEMHHLkHmi2ZQ17ng4ms8DFMs1njc1UOuPsW7whpDRifjpWyictvoA8SsXPgQUBWq/gsJTiwuqKwCz4+1TeuQ== root@dep-host" >> /home/vagrant/.ssh/authorized_keys
     for i in $(ls /sys/class/net/ | grep -v lo); do sudo resolvectl dns $i 8.8.8.8; done
+    sudo sed -i 's/^DNS=.*/DNS=8.8.8.8/g' /etc/systemd/resolved.conf
+    sudo systemctl restart systemd-resolved.service
+    sudo unlink /etc/resolv.conf
+    sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+    sudo systemctl restart networking.service
     SHELL
 end
