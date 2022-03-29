@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+BASE_IMAGE = "ubuntu/focal64"
+
+# Global configuration
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.vm.box = BASE_IMAGE
+    config.ssh.insert_key = true
+    config.vm.provider "libvirt" do |v|
+        v.memory = 2048
+        v.cpus = 1
+    end
+
+    # K8s master node
+    config.vm.define "master" do |master|
+        master.vm.network "private_network", ip: "192.168.122.140"
+        master.vm.hostname = "cluster-master"
+    end
+
+    # K8s worker nodes
+    config.vm.define "worker" do |worker|
+        worker.vm.network "private_network", ip: "192.168.122.141"
+        worker.vm.hostname = "cluster-worker"
+    end
+end
