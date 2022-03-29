@@ -17,6 +17,7 @@ create a VM with 4GB RAM + 2 vCPU.
 
 ### Available tests:
 
-  * Test env 1: single-node K8s deployment 
-  * (TO-DO) Test env 2: 1 master + 1 worker K8s deployment
-  * (TO-DO) Test env 3: 2 master + 2 worker K8s deployment
+  * Test env 1: single-node 
+    * TO-DO: function to check whether the installation succeeded
+  * (TO-DO) Test env 2: 1 master + 1 worker
+  * (TO-DO) Test env 3: X master + Y worker
